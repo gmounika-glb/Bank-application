@@ -17,5 +17,12 @@
       "user":"admin",
       "password":"jhfsh#$*9jkfjskh$$$"
     },
-    "admin_password":"GlobusAdmin@2025!"
+    "nodemailer":{
+      "email_user": "mounikagofficial@gmail.com",
+      "email_password": "zowx hpxr orsf cvvy"
+    },
+    "jwt-token":{
+      "jwt-password":"JWT@123"
+    },
+  "admin_password":"GlobusAdmin@2025!"
   }
