@@ -117,12 +117,12 @@ const startServer = () =>
     server.listen(port, () => {
       Logger.info(
         `service listening on ${config.get('user.host_url')} with ${
-          process.env.NODE_ENV
+          process.env.development
         } Environment!`
       );
       console.log(
         `service listening on ${config.get('user.host_url')} with ${
-          process.env.NODE_ENV
+          process.env.development
         } Environment!`
       );
     });
