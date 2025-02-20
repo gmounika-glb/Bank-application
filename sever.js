@@ -112,13 +112,12 @@ app.get('/', (req, res, next) => {
 
 const startServer = () =>
   new Promise((resolve, reject) => {
-    const port = config.get('user.port');
+    const port = config.get('user.port') || 3000;
 
     server.listen(port, () => {
       Logger.info(
-        `service listening on ${config.get('user.host_url')} with ${
-          process.env.development
-        } Environment!`
+        `service listening on ${config.get('user.host_url')} 
+         with ${process.env.development} Environment!`
       );
       console.log(
         `service listening on ${config.get('user.host_url')} with ${
