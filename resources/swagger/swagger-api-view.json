@@ -1,0 +1,610 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Bank Account App",
+    "description": "Bank App Apis documentaion"
+  },
+  "host": "localhost:2025",
+  "basePath": "/",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Please provide the admin password"
+    }
+  },
+  "consumes": [
+    "application/json",
+    "application/x-www-form-urlencoded"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/bank-api/manager/create": {
+      "post": {
+        "tags": [
+          "Manager"
+        ],
+        "description": "This route is used to create a Manager",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "Manager Details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateManager"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/manager/verify-otp": {
+      "post": {
+        "tags": [
+          "Manager"
+        ],
+        "description": "This route is used to verify OTP sent for email verification",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "OTP for verification",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/verifyOtp"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/manager/login": {
+      "post": {
+        "tags": [
+          "Manager"
+        ],
+        "description": "This route is used to verify OTP and log in the manager after successful email verification.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "Manager login details with email, password, and OTP for verification.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/loginManager"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/manager/customers": {
+      "get": {
+        "tags": [
+          "Manager"
+        ],
+        "description": "This route retrieves all customers stored in the system, with optional filters for customerName, accountNumber, and emailId.",
+        "parameters": [
+          {
+            "name": "customerName",
+            "in": "query",
+            "description": "Filter customers by name.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "description": "Filter customers by account number.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "emailId",
+            "in": "query",
+            "description": "Filter customers by email ID.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/manager/": {
+      "get": {
+        "tags": [
+          "Manager"
+        ],
+        "description": "This route is used to get all Managers",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/manager/update-status": {
+      "put": {
+        "tags": [
+          "Manager"
+        ],
+        "description": "This route is used to update the status of customer accounts.",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "body",
+            "description": "Customer account status update data.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateCustomerStatus"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/bank-api/manager/manager/get-inactive-customers": {
+      "get": {
+        "tags": [
+          "Manager"
+        ],
+        "description": "This route is used to fetch all inactive customer accounts.",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/bank-api/customer/create": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "This route is used to create a new Customer account.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "Customer details including fullName, email, phone, and initial deposit.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateCustomer"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/customer/verify-otp": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "This route is used to create a new Customer account.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "Customer details including fullName, email, phone, and initial deposit.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/verifyOtp"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/customer/login": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "This route is used for logging in a customer using their identifier (email, account number, customer name, or customer id).",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "Customer login details with identifier (email, account number, customer name, or customer id) and password.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/loginCustomerDetails"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/customer/accountDetails/{accountNumber}": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "This route is used to retrieve the account details of a customer.",
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Account number of the customer whose details are being fetched."
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/customer/balance/{accountNumber}": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "This route is used to get account balance of a customer.",
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Account number of the customer whose balance is being fetched."
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/customer/deposit": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "This route is used to make a transaction from the customer account.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "Make Transaction.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/makeTransaction"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/customer/withdraw": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "This route is used to withdraw funds from the customer account.",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "Customer account number.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/withdrawFunds"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bank-api/customer/transaction-history": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "description": "This route is used to fetch the transaction history of a customer with various filters.",
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "description": "Account number of the customer whose transaction history is being fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Start date for the date range filter. If not provided, all transactions before the endDate will be returned.",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "End date for the date range filter. If not provided, all transactions after the startDate will be returned.",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "name": "minAmount",
+            "in": "query",
+            "description": "Minimum transaction amount for filtering. If not provided, no minimum amount filter will be applied.",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "maxAmount",
+            "in": "query",
+            "description": "Maximum transaction amount for filtering. If not provided, no maximum amount filter will be applied.",
+            "required": false,
+            "type": "number"
+          },
+          {
+            "name": "transactionType",
+            "in": "query",
+            "description": "Filter by transaction type (Deposit or Withdrawal). If not provided, all types will be considered.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Deposit",
+              "Withdrawal"
+            ]
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by transaction status (Pending, Success, or Fail). If not provided, all statuses will be considered.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "Pending",
+              "Success",
+              "Fail"
+            ]
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Field by which the transactions should be sorted. Default is by date.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "date",
+              "amount"
+            ]
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "description": "Order in which the transactions should be sorted. Default is descending.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreateManager": {
+      "type": "object",
+      "properties": {
+        "fullName": {
+          "type": "string",
+          "example": "Manager"
+        },
+        "emailId": {
+          "type": "string",
+          "example": "mounig0610@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Manager@2025!"
+        }
+      }
+    },
+    "verifyOtp": {
+      "type": "object",
+      "properties": {
+        "emailId": {
+          "type": "string",
+          "example": "mounig0610@gmail.com"
+        },
+        "otp": {
+          "type": "string",
+          "example": "24234"
+        }
+      }
+    },
+    "loginManager": {
+      "type": "object",
+      "properties": {
+        "fullName": {
+          "type": "string",
+          "example": "Manager"
+        },
+        "emailId": {
+          "type": "string",
+          "example": "mounig0610@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Manager@2025!"
+        }
+      }
+    },
+    "CreateCustomer": {
+      "type": "object",
+      "properties": {
+        "accountType": {
+          "type": "string",
+          "example": "Savings"
+        },
+        "customerName": {
+          "type": "string",
+          "example": "Customer"
+        },
+        "emailId": {
+          "type": "string",
+          "example": "mounig0610@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Customer@2025!"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "9876543210"
+        },
+        "initialDeposit": {
+          "type": "number",
+          "example": 10000
+        }
+      }
+    },
+    "loginCustomerDetails": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "example": "mounig0610@gmail.com (or) Customer (or) 788320104709"
+        },
+        "password": {
+          "type": "string",
+          "example": "Customer@2025!"
+        }
+      }
+    },
+    "updateCustomerStatus": {
+      "type": "object",
+      "properties": {
+        "accountNumber": {
+          "type": "string",
+          "example": "1234567890"
+        },
+        "customerName": {
+          "type": "string",
+          "example": "Customer"
+        },
+        "emailId": {
+          "type": "string",
+          "example": "mounig0610@gmail.com"
+        },
+        "startDate": {
+          "type": "string",
+          "example": "2025-02-18"
+        },
+        "endDate": {
+          "type": "string",
+          "example": "2025-02-20"
+        },
+        "status": {
+          "type": "string",
+          "example": "Active"
+        }
+      }
+    },
+    "makeTransaction": {
+      "type": "object",
+      "properties": {
+        "senderAccountNumber": {
+          "type": "string",
+          "example": "1234567890"
+        },
+        "receiverAccountNumber": {
+          "type": "string",
+          "example": "0987654321"
+        },
+        "amount": {
+          "type": "number",
+          "example": 1000
+        }
+      }
+    },
+    "withdrawFunds": {
+      "type": "object",
+      "properties": {
+        "accountNumber": {
+          "type": "string",
+          "example": "1234567890"
+        },
+        "amount": {
+          "type": "number",
+          "example": 1200
+        }
+      }
+    }
+  }
+}
