@@ -15,7 +15,7 @@ const doc = {
       description: 'Please provide the admin password',
     },
   },
-  host: config.get('swagger_host_url'),
+  host: 'localhost:2025',
   basePath: '/',
   schemes: ['http', 'https'],
   consumes: ['application/json', 'application/x-www-form-urlencoded'],
