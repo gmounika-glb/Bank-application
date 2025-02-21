@@ -15,9 +15,11 @@ import MongoConnect from './resources/database/mongo.database.js';
 import Routes from './resources/mainRoutes/main.route.js';
 import Logger from './resources/logs/logger.log.js';
 import basicAuth from 'express-basic-auth';
+
 const mongoConnect = new MongoConnect();
 const app = express();
 const server = Server.Server(app);
+
 app.use(cors({origin: '*'}));
 app.use(Helmet(), Compression());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -30,6 +32,7 @@ app.use(express.json());
 app.use(bodyParser.json({limit: '50mb'}));
 
 if (process.env.IS_DEBUGGING) console.log(__filename);
+
 const swaggerFile = JSON.parse(
   fs.readFileSync('./resources/swagger/swagger-api-view.json', 'utf-8')
 );
@@ -78,6 +81,7 @@ app.use(
     extended: true,
   })
 );
+
 app.use((req, res, next) => {
   res.set({
     Connection: 'keep-alive',
@@ -112,17 +116,18 @@ app.get('/', (req, res, next) => {
 
 const startServer = () =>
   new Promise((resolve, reject) => {
-    const port = config.get('user.port') || 3000;
+    const port = process.env.PORT || config.get('user.port') || 3003;
 
     server.listen(port, () => {
+      const environment = process.env.NODE_ENV || 'development';
       Logger.info(
         `service listening on ${config.get('user.host_url')} 
-         with ${process.env.development} Environment!`
+         with ${environment} Environment!`
       );
       console.log(
-        `service listening on ${config.get('user.host_url')} with ${
-          process.env.development
-        } Environment!`
+        `service listening on ${config.get(
+          'user.host_url'
+        )} with ${environment} Environment!`
       );
     });
     resolve(true);
