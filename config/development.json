@@ -4,7 +4,7 @@
       "port": "2025",
       "host": "localhost:2025"
     },
-    "swagger_host_url": "localhost:2025",
+    "swagger_host_url": "bank-application-3.onrender.com",
     "mongo": {
       "username": "BankAccount",
       "password": "mouni098",
@@ -12,6 +12,7 @@
       "db_name": "bankApp"
     },
     "mongo_atlas_enabled": true,
+    
     "mongo_atlas_url": "mongodb+srv://gmounika:mouni098@typing-speed.wzu8o.mongodb.net/bankApp",
     "swagger_auth" :{
       "user":"admin",
