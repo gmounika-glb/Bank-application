@@ -12,7 +12,7 @@
       "db_name": "bankApp"
     },
     "mongo_atlas_enabled": false,
-    "mongo_atlas_url": "mongodb+srv://gmounika:mouni098@typing-speed.wzu8o.mongodb.net/",
+    "mongo_atlas_url": "mongodb+srv://gmounika:mouni098@typing-speed.wzu8o.mongodb.net/bankApp",
     "swagger_auth" :{
       "user":"admin",
       "password":"admin@123"
