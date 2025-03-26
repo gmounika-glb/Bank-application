@@ -20,7 +20,7 @@ class CustomerService {
   }
   async createAccount(req, res) {
     try {
-      const {error} = CustomerValidation.createCustomer(req.body);
+      const { error } = CustomerValidation.createCustomer(req.body);
       if (error) {
         return res
           .status(400)
@@ -34,8 +34,15 @@ class CustomerService {
         phoneNumber,
         initialDeposit,
       } = req.body;
+  
+      if (initialDeposit < 10000) {
+        return res
+          .status(400)
+          .send(Response.failResp('Initial deposit must be at least 10000.'));
+      }
+  
       const existingCustomer = await customerModel.findOne({
-        emailId: {$regex: new RegExp('^' + emailId + '$', 'i')},
+        emailId: { $regex: new RegExp('^' + emailId + '$', 'i') },
       });
       if (existingCustomer) {
         return res
@@ -82,8 +89,8 @@ class CustomerService {
   }
   async verifyOtp(req, res) {
     try {
-      const {emailId, otp} = req.body;
-      const customer = await customerModel.findOne({emailId: emailId});
+      const { emailId, otp } = req.body;
+      const customer = await customerModel.findOne({ emailId: emailId });
       if (!customer) {
         return res.status(404).send(Response.failResp('Customer not found.'));
       }
@@ -123,13 +130,14 @@ class CustomerService {
         customer.otp = null;
         customer.otpExpiresAt = null;
         customer.otpAttempts = 0;
+        customer.status = 'Active';
         await customer.save();
         return res
           .status(200)
           .send(
             Response.successResp(
               'OTP verified successfully. Your account is now active.',
-              {customer}
+              { customer }
             )
           );
       } else {
@@ -157,7 +165,7 @@ class CustomerService {
   }
   async login(req, res) {
     try {
-      const {identifier, password} = req.body;
+      const { identifier, password } = req.body;
       let query = {};
       if (/\S+@\S+\.\S+/.test(identifier)) {
         query.emailId = identifier;
@@ -176,6 +184,9 @@ class CustomerService {
       if (!isPasswordValid) {
         return res.status(400).send(Response.failResp('Invalid password.'));
       }
+      if (customer.status !== 'Active') {
+        return res.status(403).send(Response.failResp('Your account is not active. Please contact the manager.'));
+      }
       const userDetails = {
         accountType: customer.accountType,
         customerName: customer.customerName,
@@ -185,30 +196,18 @@ class CustomerService {
         otpVerified: customer.otpVerified || false,
       };
       const token = jwt.sign(
-        {userId: customer._id},
+        { userId: customer._id },
         config.get('jwt-token.jwt-password'),
-        {expiresIn: '1h'}
+        { expiresIn: '1h' }
       );
-      if (customer.status === 'Active') {
-        return res
-          .status(200)
-          .send(
-            Response.successResp('Login successful', {...userDetails, token})
-          );
-      }
-      return res.status(200).send(
-        Response.successResp('Login successful. Account is inactive.', {
-          ...userDetails,
-          token,
-        })
-      );
+      return res
+        .status(200)
+        .send(Response.successResp('Login successful', { ...userDetails, token }));
     } catch (err) {
       logger.error('Error during login: ', err);
       return res
         .status(500)
-        .send(
-          Response.failResp('Failed to log in. Please try again later.', err)
-        );
+        .send(Response.failResp('Failed to log in. Please try again later.', err));
     }
   }
   async getAccountDetails(req, res) {
@@ -439,7 +438,6 @@ class CustomerService {
     } = req.query;
 
     try {
-      // Validate the incoming query parameters
       const {error} = CustomerValidation.getTransactionHistory(req.query);
       if (error) {
         const errorMessages = error.details.map(detail => detail.message);
@@ -449,17 +447,13 @@ class CustomerService {
           errors: errorMessages,
         });
       }
-
       const customer = await customerModel.findOne({accountNumber});
       if (!customer) {
         return res
           .status(404)
           .json({status: 'fail', message: 'Customer not found'});
       }
-
       let filters = {};
-
-      // Apply date filters
       if (startDate || endDate) {
         let start = startDate ? new Date(startDate).toISOString() : null;
         let end = endDate ? new Date(endDate).toISOString() : null;
@@ -471,7 +465,6 @@ class CustomerService {
           filters['transactions.date'] = {$lte: end};
         }
       }
-
       // Apply amount filters
       if (minAmount || maxAmount) {
         filters['transactions.amount'] = {};
@@ -482,23 +475,19 @@ class CustomerService {
           filters['transactions.amount'].$lte = maxAmount;
         }
       }
-
       // Apply amount filter (specific amount)
       if (amount) {
         filters['transactions.amount'] = filters['transactions.amount'] || {};
         filters['transactions.amount'].$eq = amount;
       }
-
       // Apply transactionType filter
       if (transactionType) {
         filters['transactions.transactionType'] = transactionType;
       }
-
       // Apply status filter
       if (status) {
         filters['transactions.status'] = status;
       }
-
       // Filter transactions based on the provided filters
       let transactions = customer.transactions.filter(transaction => {
         let match = true;
@@ -554,7 +543,6 @@ class CustomerService {
 
         return match;
       });
-
       // Sort transactions
       if (sortBy === 'amount') {
         transactions.sort((a, b) => {
@@ -569,14 +557,12 @@ class CustomerService {
             : new Date(b.date) - new Date(a.date);
         });
       }
-
       if (transactions.length === 0) {
         return res.status(404).json({
           status: 'fail',
           message: 'No transactions found for the given filters',
         });
       }
-
       return res.status(200).json({
         status: 'success',
         message: 'Transaction history fetched successfully.',

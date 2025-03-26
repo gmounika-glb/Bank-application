@@ -195,6 +195,24 @@
         ]
       }
     },
+    "/bank-api/manager/manager/get-Active-customers": {
+      "get": {
+        "tags": [
+          "Manager"
+        ],
+        "description": "This route is used to fetch all Active customer accounts.",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/bank-api/customer/create": {
       "post": {
         "tags": [
