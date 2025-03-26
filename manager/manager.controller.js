@@ -91,5 +91,15 @@ class ManagerController {
   */
     return await ManagerService.getAllInactiveCustomers(req, res, next);
   }
+  async getAllActiveCustomers(req, res, next) {
+    /* 
+    #swagger.tags = ['Manager']
+    #swagger.description = 'This route is used to fetch all Active customer accounts.'
+    #swagger.security = [{
+       "Bearer": []
+     }]
+  */
+    return await ManagerService.getAllActiveCustomers(req, res, next);
+  }
 }
 export default new ManagerController();

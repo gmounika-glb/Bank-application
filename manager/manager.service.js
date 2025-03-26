@@ -328,5 +328,33 @@ class ManagerService {
         );
     }
   }
+  async getAllActiveCustomers(req, res) {
+    try {
+      const customers = await CustomerModel.find({status: 'Active'});
+      if (customers.length === 0) {
+        return res
+          .status(404)
+          .send(Response.failResp('No Active customer accounts found.'));
+      }
+      return res
+        .status(200)
+        .send(
+          Response.successResp(
+            'Active customer accounts fetched successfully.',
+            customers
+          )
+        );
+    } catch (err) {
+      logger.error('Error fetching inactive customers: ', err);
+      return res
+        .status(500)
+        .send(
+          Response.failResp(
+            'Failed to fetch Active customers. Please try again later.',
+            err
+          )
+        );
+    }
+  }
 }
 export default new ManagerService();

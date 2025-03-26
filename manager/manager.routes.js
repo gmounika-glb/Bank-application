@@ -18,5 +18,10 @@ router.get(
   authMiddleware,
   ManagerController.getAllInactiveCustomers
 );
+router.get(
+  '/manager/get-Active-customers',
+  authMiddleware,
+  ManagerController.getAllActiveCustomers
+);
 
 export default router;
