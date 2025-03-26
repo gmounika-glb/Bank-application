@@ -130,13 +130,13 @@ class CustomerService {
         customer.otp = null;
         customer.otpExpiresAt = null;
         customer.otpAttempts = 0;
-        customer.status = 'Active';
+        customer.status = 'Inactive';
         await customer.save();
         return res
           .status(200)
           .send(
             Response.successResp(
-              'OTP verified successfully. Your account is now active.',
+              'OTP verified successfully.',
               { customer }
             )
           );
